@@ -1,0 +1,55 @@
+/**
+n=6;
+1*√(36+1*√(25+2*√(16+3*√(9+5*√(4+8*√1) ) ) ) ) =6.482060
+
+n=7;	
+1*√(49+1*√(36+2*√(25+3*√(16+5*√(9+8*√(4+13*√1) ) ) ) ) ) =7.485911
+*/
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+
+double rek(int n, int n1)
+{   int br1=1, br2=1, fib=1;
+    for(int i1=2;i1<n1;i1++){
+                fib=br1+br2;
+                br1=br2;
+                br2=fib;}
+    while(n!=1)
+    {
+        return sqrt((float)pow(n,2)+(float)fib*rek(n-1, n1+1));
+    }
+
+    return (float)sqrt(1);
+}
+double ite(int n)
+{
+    int i, j,n1=n, br1=1, br2=1, fib=1;
+    double zbir=sqrt(1);
+    for(i=2; i<=n; i++){
+            if(n1!=0)
+            {  for(int i1=2;i1<n1;i1++){
+                fib=br1+br2;
+                br1=br2;
+                br2=fib;}
+            }
+        zbir=sqrt((float)pow(i,2)+fib*zbir);
+        n1--;
+        br1=1;
+        br2=1;
+        fib=1;
+        }
+        return zbir;
+}
+int main()
+{
+    int n;
+    scanf("%d", &n);
+    printf("Rezultat rekurzivno: %lf,", rek(n, 2));
+    printf("rezultat iterativno: %lf ", ite(n));
+
+
+
+    return 0;
+}
