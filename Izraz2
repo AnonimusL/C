@@ -1,0 +1,110 @@
+/**
+n=6;
+	1+18/(1-15/(2+12/(3-9/(5+6/3))))=-39.235294
+n=7;
+1+21/(1-18/(2+15/(3-12/(5+9/(8-6/13)))))=-178.666667
+*/
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+
+int n2;
+double rek(int n, int n1)
+{
+    int br1=1, br2=1, fib=1;
+    for(int i=1; i<n1; i++)
+    {
+        fib=br1+br2;
+        br1=br2;
+        br2=fib;
+    }
+    while(n!=1)
+    {
+        if(n1%2==0)
+        {
+            return (float)fib+(float)(3*n)/rek(n-1, n1+1);
+        }
+        else
+        {
+            return (float)fib-(float)(3*n)/rek(n-1, n1+1);
+        }
+    }
+    return (float)fib;
+}
+
+double ite(int n, int gore)
+{
+    int br1=1, br2=1, fib=1, tmp=1, kraj=1;
+    double zbir=fib;
+    if(n==3)
+        zbir=2;
+    for(int i=n-1; i>0; i--)
+    {
+        for(int i1=2; i1<i; i1++)
+        {
+
+
+            fib=br1+br2;
+            br1=br2;
+            br2=fib;
+            kraj++;
+
+            if(tmp && kraj==i-1)
+            {
+                zbir=(float)br2+br1;
+                tmp=0;
+            }
+        }
+        if(n2%2==0)
+        {
+            if(i%2==1)
+            {
+                zbir=(float)fib+(float)gore/zbir;
+                br1=1;
+                br2=1;
+                fib=1;
+                gore=gore+3;
+            }
+            else
+            {
+                zbir=(float)fib-(float)gore/zbir;
+                br1=1;
+                br2=1;
+                fib=1;
+                gore=gore+3;
+            }
+        }
+        else
+        {
+            if(i%2==0)
+            {
+                zbir=(float)fib-(float)gore/zbir;
+                br1=1;
+                br2=1;
+                fib=1;
+                gore=gore+3;
+            }
+            else
+            {
+                zbir=(float)fib+(float)gore/zbir;
+                br1=1;
+                br2=1;
+                fib=1;
+                gore=gore+3;
+            }
+        }
+    }
+
+    return zbir;
+}
+int main()
+{
+    int n;
+    scanf("%d", &n);
+    n2=n;
+    printf("Rezultat rekurzivno: %lf;\n", rek(n,0));
+    printf("Rezultat iterativno: %lf.", ite(n, 6));
+}
+
+
