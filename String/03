@@ -1,0 +1,37 @@
+/**
+Napisati program koji menja uneti string koji sadrži cifre i znak '-', tako što cifre između
+znaka - šiftuje za jedno mesto u desno.
+
+Primer: 345-135-3217
+Rezultat: 534-513-7321
+*/
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int main()
+{
+     char string[100];
+     char novi[100];
+     int flag=1;
+     gets(string);
+     char* token=strtok(string, "-");
+     while(token!=NULL)
+     {
+         char toki[20];
+         int i;
+         toki[0]=token[strlen(token)-1];
+         for(i=1; i<strlen(token); i++)
+         {
+             toki[i]=token[i-1];
+         }
+         toki[i]='\0';
+         if(flag){strcpy(novi, toki); strcat(novi,"-"); flag=0;}
+         else{strcat(novi, toki); strcat(novi, "-");}
+            token=strtok(NULL, "-");
+     }
+     strcat(novi, "\0");
+     novi[strlen(novi)-1]='\0';
+     puts(novi);
+}
