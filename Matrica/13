@@ -1,0 +1,82 @@
+/**
+Napisati program koji učitava ceo broj n i matricu koja sadrži cifre od 0 do 9 i proverava da li
+postoje vrsta ili kolona koje sadrže sve cifre broja n u bilo kom redosledu sa tačnim brojem
+pojavljivanja cifara. Ispisati indekse svih vrsta i kolona za koje ovo važi (indeksi počinju od 0).
+Primer:
+1 4 9 1 n = 447
+4 7 1 4
+2 3 4 2
+7 4 1 4
+Ispis:
+vrste 1 3
+kolona 1
+*/
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <limits.h>
+#include <math.h>
+
+int main()
+{
+    int matrix[100][100], matrix2[100][100];
+    int n, m;
+
+    scanf("%d", &n);
+    scanf("%d", &m);
+    int i, j;
+    for(i=0; i<m; i++)
+    {
+        for(j=0; j<m; j++)
+        {
+            scanf("%d", &matrix[i][j]);
+            matrix2[i][j]=matrix[i][j];
+        }
+    }
+    int niz[100];
+    int k=0, n1;
+    n1=n;
+    while(n1!=0)
+    {
+        n1=n1/10;
+        k++;
+    }
+    int num=k;
+    while(n!=0)
+    {
+        niz[k-1]=n%10;
+        k--;
+        n=n/10;
+    }
+    for(i=0; i<m; i++)
+    {
+        for(j=0; j<m; j++)
+        {
+            if(matrix[i][j]==niz[k])
+            {
+                matrix[i][j]=10;
+                k++;
+                j=-1;
+            }
+        }
+        if(k==num) printf("Vrsta %d\n", i);
+        k=0;
+    }
+    k=0;
+     for(i=0; i<m; i++)
+    {
+        for(j=0; j<m; j++)
+        {
+            if(matrix2[j][i]==niz[k])
+           {
+                matrix2[j][i]=10;
+                k++;
+                j=-1;
+            }
+        }
+        if(k==num) printf("Kolona %d\n", i);
+        k=0;
+    }
+
+    return 0;
+}
