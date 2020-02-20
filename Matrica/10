@@ -1,0 +1,96 @@
+/**
+Napraviti funkciju koja za unetu matricu dimenzija N x N pravi novu matricu čija se polja formiraju
+na slededi način. Svako polje u novoj matrici je jednako razlici sume susednih polja iz učitane matrice
+(iznad, ispod, levo, desno) i vrednosti sa trenutnog polja. Korisnik učitava ceo broj N i matricu.
+( učitana matrica ) ( nova matrica )
+n = 3
+5 3 6                   1 13 -2
+3 5 1                   9 3 13
+2 1 3                   2 9 -1
+Objašnjenje primera:
+1 = 3 + 3 – 5
+13 = 6 + 5 + 5 – 3
+-2 = 1 + 3 - 6
+*/
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <limits.h>
+#include <math.h>
+
+void izmena(int matrix[][100], int matrix2[][100], int n)
+{
+    int i=0, j=0;
+    for(i=0; i<n; i++)
+    {
+        for(j=0; j<n; j++)
+        {
+            if(i==0 && j==0)
+            {
+                matrix2[i][j]=matrix[i+1][j]+matrix[i][j+1]-matrix[i][j];
+            }
+            if(i==n-1 && j==n-1)
+            {
+                matrix2[i][j]=matrix[i-1][j]+matrix[i][j-1]-matrix[i][j];
+            }
+            if(i==0 && j!=0 && j!=n-1)
+            {
+                matrix2[i][j]=matrix[i+1][j]+matrix[i][j+1]+matrix[i][j-1]-matrix[i][j];
+            }
+            if(i==0 && j==n-1)
+            {
+                matrix2[i][j]=matrix[i+1][j]+matrix[i][j-1]-matrix[i][j];
+            }
+            if(i==n-1 && j!=0 && j!=n-1)
+            {
+                matrix2[i][j]=matrix[i-1][j]+matrix[i][j-1]+matrix[i][j+1]-matrix[i][j];
+            }
+            if(i==n-1 && j==n-1)
+            {
+                matrix2[i][j]=matrix[i-1][j]+matrix[i][j-1]-matrix[i][j];
+            }
+            if(j==0 && i!=0 && i!=n-1)
+            {
+                matrix2[i][j]=matrix[i+1][j]+matrix[i-1][j]+matrix[i][j+1]-matrix[i][j];
+            }
+            if(j==0 && i==n-1)
+            {
+                matrix2[i][j]=matrix[i][j+1]+matrix[i-1][j]-matrix[i][j];
+            }
+            if(j==n-1 && i!=0 && i!=n-1)
+            {
+                matrix2[i][j]=matrix[i][j-1]+matrix[i+1][j]+matrix[i-1][j]-matrix[i][j];
+            }
+            if(i!=0 && i!=n-1 && j!=0 && j!=n-1)
+            {
+                matrix2[i][j]=matrix[i+1][j]+matrix[i-1][j]+matrix[i][j-1]+matrix[i][j+1]-matrix[i][j];
+            }
+        }
+    }
+    return matrix2;
+}
+int main()
+{
+    int n;
+    scanf("%d", &n);
+    int matrix[100][100], matrix2[100][100];
+    for(int i=0; i<n; i++)
+    {
+        for(int j=0; j<n; j++)
+        {
+            scanf("%d", &matrix[i][j]);
+        }
+    }
+    izmena(matrix, matrix2, n);
+
+    for(int i=0; i<n; i++)
+    {
+        for(int j=0; j<n; j++)
+        {
+            printf("%d ", matrix2[i][j]);
+        }
+        printf("\n");
+    }
+
+    return 0;
+}
