@@ -1,0 +1,58 @@
+/**
+Korisnik unosi rečenicu. Ispisati najučestaliju reč (reč koja se pojavila najvedi broj puta) i njenu
+učestalost. Ukoliko postoji više reči koje imaju najvedu učestalost ispisati prvu koja se pojavila u rečenici.
+
+primer:
+prvi drugi prvi drugi treci prvi
+izlaz: prvi 3
+*/
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int main()
+{
+    char str[100];
+    gets(str);
+    char str2[100];
+    char str3[100];
+    strcpy(str2, str);
+    char* token = strtok(str, " ");
+    int  maxBrojac = 0;
+    while(token != NULL)
+    {
+        int postoji = 0;
+        int brojac = 0;
+        for(int i=0; i<strlen(str2); i++)
+        {
+            if(token[0] == str2[i])
+            {
+                for(int j=0; j<strlen(token); j++)
+                {
+                    if(token[j] == str2[i+j])
+                        postoji = 1;
+                    else {
+                        postoji = 0;
+                        break;
+                    }
+                }
+            }
+            if(postoji)
+            {
+                brojac++;
+                postoji = 0;
+            }
+            
+        }
+        if(brojac > maxBrojac)
+        {
+            maxBrojac = brojac;
+            strcpy(str3,token);
+        }
+        token = strtok(NULL, " ");
+    }
+    strcat(str3, "\0");
+    printf("%s %d", str3, maxBrojac);
+    return 0;
+}
