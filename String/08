@@ -1,0 +1,57 @@
+/**
+Napisati program koji učitava string koji sadrži mala slova i crtice i od unetog stringa
+pravi novi string u kom je svaki podstring između crtica zamenjen slovima koji se u podstringu
+unetog stringa pojavljuju više od jednom (u bilo kom redosledu).
+
+Primer: abba-afgf-ccc-fgh
+Rezultat: ab-f-c
+/*
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int main()
+{
+    char string[100];
+    char string2[100];
+    int brojac=0, flag=1;
+    gets(string);
+    char* token=strtok(string, "-");
+    while(token!=NULL)
+    {
+        char tmp[10];
+        int i, j, k, ft=1, p=0, postoji=0;
+        for(i=0; i<strlen(token); i++)
+        {
+            for(j=0; j<strlen(token); j++)
+            {
+                if(token[i]==token[j]) brojac++;
+            }
+            if(brojac>1)
+            {
+                if(ft) {tmp[p]=token[i]; ft=0; p++;}
+                else
+                {
+                    for(k=0; k<strlen(tmp); k++)
+                    {
+                        if(token[i]==tmp[k]) {postoji=1; break;} else postoji=0;
+                    }
+                    if(postoji==0)
+                    {tmp[p]=token[i]; p++;}
+                }
+            }
+            brojac=0;
+            postoji=0;
+        }
+        tmp[p]='\0';
+        if(tmp[0]!='\0'){
+        if(flag){strcpy(string2, tmp); strcat(string2, "-"); flag=0;}
+        else {strcat(string2, tmp); strcat(string2, "-");}}
+        token=strtok(NULL, "-");
+        
+    }
+    string2[strlen(string2)-1]='\0';
+    puts(string2);
+    return 0;
+}
