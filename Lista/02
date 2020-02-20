@@ -1,0 +1,155 @@
+/** temperature.txt
+Vranje -2 13
+Beograd 2 16
+Nis -3 17
+Subotica 0 20
+Paracin -2 15
+Kragujevac -5 6
+Kraljevo -1 14
+Surcin 3 18
+*/
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+typedef struct Lista{
+
+        char line[255];
+        char grad[50];
+        int jutro;
+        int dnevna;
+        struct Lista* sledeci;
+
+}Lista;
+
+Lista* napravielement(char tekst[])
+{
+    Lista* novi=(Lista*)malloc(sizeof(Lista));
+    strcpy(novi->line, tekst);
+    /// ubacujemo elemente u listu
+    strcpy(novi->grad, strtok(novi->line, " "));
+    novi->jutro=atoi(strtok(NULL, " "));
+    novi->dnevna=atoi(strtok(NULL, " "));
+    novi->sledeci=NULL;
+    return novi;
+}
+
+Lista* dodajrastuce(Lista* glava, Lista* novi)
+{
+       if(glava==NULL)
+        return novi;
+
+       /// glava menja redosled
+       if(strcmp(glava->grad, novi->grad)>=1)
+       {
+           novi->sledeci=glava;
+           return novi;
+       }
+       /// menja se redosle nekog elementa
+       Lista* tmp=glava;
+       while(tmp->sledeci!=NULL)
+       {
+           if(strcmp(tmp->sledeci->grad, novi->grad)>=1)
+           {
+               Lista* helper=tmp->sledeci;
+               tmp->sledeci=novi;
+               novi->sledeci=helper;
+               return glava;
+           }
+           tmp=tmp->sledeci;
+       }
+       tmp->sledeci=novi;
+       novi->sledeci=NULL;
+
+       return glava;
+}
+
+Lista* najvecarazlika(Lista* glava)
+{
+       int razlika=0;
+       int max=0;
+       char nadjenigrad[50];
+       Lista* tmp=glava;
+       while(tmp!=NULL)
+       {
+           razlika=tmp->dnevna-tmp->jutro;
+           if(razlika>max)
+           {
+               max=razlika;
+               strcpy(nadjenigrad, tmp->grad);
+           }
+           razlika=0;
+           tmp=tmp->sledeci;
+       }
+       printf("U pitanju je grad %s\n", nadjenigrad);
+
+}
+
+Lista* prosek(Lista* glava, int temp)
+{
+    int zbir=0, brojac=0;
+    Lista* tmp=glava;
+    while(tmp!=NULL)
+    {
+        if(tmp->jutro<=temp)
+        {
+            zbir=zbir+tmp->dnevna;
+            brojac++;
+        }
+        tmp=tmp->sledeci;
+    }
+    printf("Prosecna dnevna temperatura: %d\n", zbir/brojac);
+}
+
+Lista* ispis(Lista* glava)
+{
+    Lista* tmp=glava;
+    while(tmp!=NULL)
+    {
+        printf("Grad: %s, jutarnja %d, dnevna %d\n", tmp->grad, tmp->jutro, tmp->dnevna);
+        tmp=tmp->sledeci;
+    }
+}
+
+int main()
+{
+    FILE* fp;
+    Lista* glava=NULL;
+    char str[255];
+    char imefajla[50];
+    while(1)
+    {
+        int izbor, pomocni;
+        printf("------------------------------\n");
+        printf("Izabrite opciju:\n1. Ucitavanje podataka;\n2. Ispis elmenata;\n3. Najveca razlika;\n4. Ispis prosecne temperature za jutarnju.\n");
+        printf("------------------------------\n");
+        scanf("%d", &izbor);
+        switch(izbor)
+        {
+        case 1:
+            printf("Unesite ime fajla\n");
+            scanf("%s", imefajla);
+            fp=fopen(strcat(imefajla, ".txt"), "r+");
+            while(fgets(str, 255, fp)!=NULL)
+            {
+                str[strlen(str)-1]='\0';
+                glava=dodajrastuce(glava, napravielement(str));
+            }
+            break;
+        case 2:
+            printf("Iterativno\n");
+            ispis(glava);
+            break;
+        case 3:
+            najvecarazlika(glava);
+            break;
+        case 4:
+            printf("Unesite jutarnju temperaturu za uporedjivanje\n");
+            scanf("%d", &pomocni);
+            prosek(glava, pomocni);
+            break;
+        }
+    }
+    return 0;
+}
