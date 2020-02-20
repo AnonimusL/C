@@ -1,15 +1,19 @@
 // Funkcija za izbacivanje duplikata iz niza
 
 
+void nodup(int niz[], int n)
+{
+    int i, j, k;
+    
 for(i = 0; i < n; i++)
     {
         for(j = i+1; j < n; )
         {
-            if(a[j] == a[i])
+            if(niz[j] == niz[i])
             {
                 for(k = j; k < n; k++)
                 {
-                    a[k] = a[k+1];
+                    niz[k] = niz[k+1];
                 }
                 n--;
             }
@@ -19,3 +23,5 @@ for(i = 0; i < n; i++)
             }
         }
     }
+    
+}
