@@ -1,0 +1,78 @@
+/**
+Napisati funkciju koja za uneti broj n pravi matricu kao u datim primerima, cifre broja
+se postavljaju na sporednu i glavnu dijagonalu, na glavnoj diganoli u obrnutom redosledu. Zatim se
+kolone popunjavaju tako što se između cifara sa dijagnola upisuju brojevi za jedan vedi, a izvan
+brojevi za jedan manji od broja na dijagonalama. Smatra se da posle 9 dolazi 0 (0 je za jedan veda od 9).
+n=45901       n=9445      n=90
+1 9 8 4 4     5 3 3 9     0 9
+2 0 8 5 5     6 4 4 0     0 9
+2 1 9 6 5     6 4 4 0
+2 0 8 5 5     5 3 3 9
+1 9 8 4 4
+*/
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <limits.h>
+#include <math.h>
+
+int main()
+{
+    int n;
+    scanf("%d" ,&n);
+    int broj = n, niz[n], brojac = 0;
+    while(n != 0)
+    {
+        niz[brojac] = n%10;
+        n /= 10;
+        brojac++;
+    }
+    int mat[brojac][brojac];;
+    for(int i=0; i<brojac; i++)
+    {
+        for(int j=0; j<brojac; j++)
+        {
+            if(i == j)
+            {
+                mat[i][j] = niz[i];
+            }
+            else if(i+j == brojac-1)
+            {
+                mat[i][j] = niz[brojac-i-1];
+            }
+            ///Ispod glavna iznad sporedne
+            else if(i > j && i+j < brojac-1)
+            {
+                if(niz[j] == 9) mat[i][j] = 0;
+                else mat[i][j] = niz[j]+1;
+            }
+            ///Ispod glavna ispod sporedna
+            else if(i > j && i+j > brojac-1)
+            {
+                if(niz[j] == 0) mat[i][j] = 9;
+                else mat[i][j] = niz[j] -1;
+            }
+            ///Iznad glavna iznad sporedna
+            else if(i < j && i+j < brojac-1)
+            {
+                if(niz[j] == 0) mat[i][j] = 9;
+                else mat[i][j] = niz[j] -1;
+            }
+           ///Iznad glavna ispod sporedna
+            else if(i < j && i+j > brojac-1)
+            {
+                if(niz[j] == 9) mat[i][j] = 0;
+                else mat[i][j] = niz[j] + 1;
+            }
+        }
+    }
+    for(int i=0; i<brojac; i++)
+    {
+        for(int j=0; j<brojac; j++)
+        {
+            printf("%d ", mat[i][j]);
+        }
+        printf("\n");
+    }
+    return 0;
+}
