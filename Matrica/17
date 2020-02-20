@@ -1,0 +1,158 @@
+/**
+Napisati program koji učitava dve kvadratne matrice celih brojeva, matrice su istih dimenzija
+i proverava da li postoje vrste i kolone u ovim matricama koje sadrže iste elemente u proizvoljnom
+redosledu ako se zanemari broj pojavljivanja elemanata (porede se kolone sa kolonama i vrste sa
+vrstama). Program treba da ispiše sve parove rednih brojeva vrsta i kolona sa istim elementima.
+Primer:
+1. matrica        2. matrica
+1 1 9 7           1 9 7 9
+1 5 9 1           7 9 7 1
+1 9 7 9           5 1 8 8
+1 15 6 9          5 7 8 6
+Ispis:
+vrste 0 0
+vrste 0 1
+vrste 2 0
+vrste 2 1
+kolone 3 1
+*/
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <limits.h>
+#include <math.h>
+
+int n1;
+void sort(int niz1[], int n)
+{
+    int i,j, a;
+    for (i = 0; i < n; ++i)
+        {
+
+            for (j = i + 1; j < n; ++j)
+            {
+
+                if (niz1[i] > niz1[j])
+                {
+
+                    a =  niz1[i];
+                    niz1[i] = niz1[j];
+                    niz1[j] = a;
+
+                }
+            }
+        }
+
+}
+
+void nodup(int niz1[], int n)
+{
+    int i,j,k;
+    for(i = 0; i < n; i++)
+    {
+        for(j = i+1; j < n; )
+        {
+            if(niz1[j] == niz1[i])
+            {
+                for(k = j; k < n; k++)
+                {
+                    niz1[k] = niz1[k+1];
+                }
+                n--;
+            }
+            else
+            {
+                j++;
+            }
+        }
+    }
+    n1=n;
+
+}
+
+int main()
+{
+    int n;
+    scanf("%d", &n);
+    int matrix1[n][n], matrix2[n][n];
+    int arr1[n], arr2[n];
+    for(int i=0; i<n; i++)
+    {
+        for(int j=0; j<n; j++)
+        {
+            scanf("%d ", &matrix1[i][j]);
+        }
+    }
+    for(int i=0; i<n; i++)
+    {
+        for(int j=0; j<n; j++)
+        {
+            scanf("%d ", &matrix2[i][j]);
+        }
+    }
+    int counter=0, len1, len2, i1=0;
+    for(i1=0; i1<n; i1++)
+    {
+    for(int i=0; i<n; i++)
+    {
+        for(int j=0; j<n; j++)
+        {
+            arr1[j]=matrix1[i1][j];
+            arr2[j]=matrix2[i][j];
+        }
+        sort(arr1, n);
+        sort(arr2, n);
+        nodup(arr1, n);
+        len1=n1;
+        nodup(arr2, n);
+        len2=n1;
+        if(len1==len2)
+        {
+            for(int k=0; k<len1; k++)
+            {
+                if(arr1[k]==arr2[k])
+                {
+                    counter++;
+                }
+            }
+        }
+        if(counter>=len1){printf("Red %d i red %d\n", i1, i);}
+        counter=0;
+    }
+    }
+    counter=0;
+    for(int j1=0; j1<n; j1++)
+    {
+        for(int j=0; j<n; j++)
+        {
+            for(int i=0; i<n; i++)
+            {
+                arr1[i]=matrix1[i][j1];
+                arr2[i]=matrix2[i][j];
+            }
+            sort(arr1, n);
+            sort(arr2, n);
+            nodup(arr1, n);
+            len1=n1;
+            nodup(arr2, n);
+            len2=n1;
+            if(len1==len2)
+            {
+                for(int k=0; k<len1; k++)
+                {
+                    if(arr1[k]==arr2[k])
+                    {
+                        counter++;
+                    }
+                }
+            }
+            if(counter>=len1)
+            {
+                printf("Kolona %d i kolona %d\n", j1, j);
+            }
+            counter=0;
+        }
+    }
+
+    return 0;
+}
