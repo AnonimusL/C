@@ -1,0 +1,32 @@
+/**
+Napisati program koji menja unetu rečenice koja se čuva kao string tako što izbacuje sve
+reči koje imaju manje od n karaktera, broj n unosi korisnik. Pretpostavlja se da se unose samo slova i
+znak razmaka (space). Primer za n=5.
+
+Primer: Recenica koja ima nekoliko reci
+Rezultat: Recenica nekoliko
+*/
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int main()
+{
+    char string[100];
+    char novi[100];
+    int flag=1;
+    gets(string);
+    char* token=strtok(string, " ");
+    while(token!=NULL)
+    {
+        if(strlen(token)>5)
+        {
+            if(flag) {flag=0; strcpy(novi, token); strcat(novi, " ");}
+            else {strcat(novi, token); strcat(novi, " ");}
+        }
+        token=strtok(NULL, " ");
+    }
+    strcat(novi, "\0");
+    puts(novi);
+}
