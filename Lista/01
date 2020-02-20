@@ -1,0 +1,203 @@
+/** avg-inonimi.txt
+
+brz-hitar
+debeo-punacak
+drag-mio
+hladna-ledena
+hodati-ici
+koracati-hodati
+konj-kljuse
+konj-raga
+kuća-dom
+mrak-pomracina
+ucenik-djak
+veseo-radostan
+razdragan-veseo
+raspolozen-veseo
+skolarac-ucenik
+tmina-mrak
+ognjiste-kuca
+*/
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+typedef struct Lista
+{
+        char line[255];
+        char rec1[20];
+        char rec2[20];
+        struct Lista* sledeci;
+
+} Lista;
+
+Lista* napravielement(char tekst[])
+{
+    Lista* novi=(Lista*)malloc(sizeof(Lista));
+    strcpy(novi->line, tekst);
+    /// ubacujem elemente u listu
+    strcpy(novi->rec1, strtok(novi->line, "-"));
+    strcpy(novi->rec2, strtok(NULL, "-"));
+    novi->sledeci=NULL;
+    return novi;
+}
+
+Lista* dodajrastuce(Lista* glava, Lista* novi)
+{
+    if(glava==NULL)
+        return novi;
+    /// ako je glava veca
+
+    if(strcmp(glava->rec1, novi->rec1)>=1 || (strcmp(glava->rec1, novi->rec1)==0 && strcmp(glava->rec2, novi->rec2)>=1))
+    {
+        novi->sledeci=glava;
+        return novi;
+    }
+    /// ako je negde u sredini
+
+    Lista* tmp=glava;
+    while(tmp->sledeci!=NULL)
+    {
+        if(strcmp(tmp->sledeci->rec1, novi->rec1)>=1 || (strcmp(tmp->sledeci->rec1, novi->rec1)==0 && strcmp(tmp->sledeci->rec2, novi->rec2)>=1))
+        {
+            Lista* helper=tmp->sledeci;
+            tmp->sledeci=novi;
+            novi->sledeci=helper;
+            return glava;
+        }
+        tmp=tmp->sledeci;
+    }
+    tmp->sledeci=novi;
+    novi->sledeci=NULL;
+
+    return glava;
+}
+
+void ispisi(Lista* glava)
+{
+    Lista* tmp=glava;
+    while(tmp!=NULL)
+    {
+        printf("%s-%s\n", tmp->rec1, tmp->rec2);
+        tmp=tmp->sledeci;
+    }
+}
+
+Lista* nadjisinonime(Lista* glava, char rec[])
+{
+    Lista* tmp=glava;
+    while(tmp!=NULL)
+    {
+        if(strcmp(tmp->rec1, rec)==0)
+        {
+            printf("%s ", tmp->rec2);
+        }
+        if(strcmp(tmp->rec2, rec)==0)
+        {
+            printf("%s ", tmp->rec1);
+        }
+
+        tmp=tmp->sledeci;
+    }
+    printf("\n");
+    return glava;
+}
+
+Lista* rek(Lista* glava, Lista* tmp, char rec[])
+{
+    if(tmp==NULL)
+        return glava;
+
+    if(strcmp(tmp->rec1, rec)==0) printf("%s ", tmp->rec2);
+    if(strcmp(tmp->rec2, rec)==0) printf("%s ", tmp->rec1);
+    return rek(glava, tmp->sledeci, rec);
+
+}
+Lista* ponavljanje(Lista* glava)
+{
+    int max=0;
+    char pamtim[50];
+    Lista* tmp=glava;
+    while(tmp!=NULL)
+    {
+        char rec[50];
+        strcpy(rec, tmp->rec1);
+        int brojac=0;
+        Lista* tmp2=glava;
+        while(tmp2!=NULL)
+        {
+        if(strcmp(tmp->rec1, tmp2->rec1)==0 || strcmp(tmp->rec1, tmp2->rec2)==0)
+            brojac++;
+            tmp2=tmp2->sledeci;
+        }
+        if(brojac>max)
+        {
+            max=brojac;
+            strcpy(pamtim, tmp->rec1);
+        }
+        tmp=tmp->sledeci;
+    }
+    Lista* tmp3=glava;
+    printf("%s\n", pamtim);
+    while(tmp3!=NULL)
+    {
+        if(strcmp(tmp3->rec1, pamtim)==0)
+        {
+            printf("%s ", tmp3->rec2);
+        }
+        if(strcmp(tmp3->rec2, pamtim)==0)
+        {
+            printf("%s ", tmp3->rec1);
+        }
+        tmp3=tmp3->sledeci;
+    }
+    printf("\n");
+    return glava;
+}
+
+int main()
+{
+    FILE* fp;
+    Lista* glava=NULL;
+    char str[255];
+    char imefajla[30];
+
+    while(1)
+    {
+        int izbor;
+        char pomocni[20];
+        printf("------------------------------\n");
+        printf("Izaberite opciju:\n1. Ubacite ime fajla, sortira se rastuce;\n2. Ispis sinonima jedne odredjene reci;\n3. Pronadjite rec sa najvise sninonima;\n4. Ispisi listing.\n");
+        printf("------------------------------\n");
+        scanf("%d", &izbor);
+
+        switch(izbor)
+        {
+        case 1:
+            printf("Unesite nazi fajla u ovom obliku avg-grupa2\n");
+            scanf("%s", imefajla);
+            fp=fopen(strcat(imefajla, ".txt"), "r+");
+            while(fgets(str, 255, fp)!=NULL)
+            {   str[strlen(str)-1]='\0';
+                glava=dodajrastuce(glava, napravielement(str));
+            }
+            break;
+        case 2:
+            printf("Unesite rec\n");
+            scanf("%s", pomocni);
+            glava=nadjisinonime(glava, pomocni);
+            glava=rek(glava, glava, pomocni);
+            printf("\n");
+            break;
+
+        case 3:
+            glava=ponavljanje(glava);
+            break;
+        case 4:
+            ispisi(glava);
+            break;
+        }
+    }
+    return 0;
+}
