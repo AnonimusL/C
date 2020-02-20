@@ -1,0 +1,61 @@
+/**
+Napisati program koji učitava jedan duži string koji se sastoji od reči razdvojenih spejsom i
+jedan kradi string koji ne sadrži spejs. Program treba da iz dužeg stringa izbaci sve reči koje počinju ili
+se završavaju kradim stringom. Pri tome zanemariti veličinu slova. Rezultujudi string ispisati na
+sistemski izlaz.
+
+Primer:
+prvi string: Danas pada sneg u Beogradu
+drugi string: da
+Ispis: sneg u Beogradu
+*/
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int main()
+{
+    char string1[100];
+    char string2[100];
+    char novi[100];
+    int flag=1;
+    gets(string1);
+    gets(string2);
+    char* token=strtok(string1, " ");
+    while(token!=NULL)
+    {   int brojac=0, i, k;
+        for(i=0; i<strlen(token); i++)
+        {
+            if(token[i]==string2[0] || token[i]==string2[0]-32)
+            {
+                for(k=0; k<strlen(string2); k++)
+                {
+                    if(string2[k]==token[i+k] || string2[k]-32==token[i+k])
+                    {
+                        brojac++;
+                    }
+                }
+            }
+            if(brojac==strlen(string2)){break;}
+            else brojac=0;
+        }
+        if(brojac==0)
+        {
+            if(flag)
+            {
+                strcpy(novi, token);
+                strcat(novi, " ");
+                flag=0;
+            }
+            else { strcat(novi, token); strcat(novi, " ");}
+        }
+        token=strtok(NULL, " ");
+
+        }
+        strcat(novi, "\0");
+        puts(novi);
+
+        return 0;
+
+    }
