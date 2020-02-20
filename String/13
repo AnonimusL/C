@@ -1,0 +1,72 @@
+/**
+Napisati program koji učitava string koji se sastoji od reči razdvojenih
+spejsom, reči mogu da sadrže slova engleske abecede i maksimalno jedan znak
+uzvika, a ne moraju ni jedan. Program treba da promeni uneti string (ili napravi
+novi na osnovu unetog) tako što će izbaciti reči koje nemaju uzvičnik, a u rečima
+koje imaju uzvičnik zameniti mesta podstringovima pre i posle uzvičnika.
+
+Primer:
+prvi string: obla!ci mesec su!nce
+Ispis: ci!obla nce!su
+*/
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int main()
+{
+    char str1[100];
+    char str2[100];
+    int ft=1;
+    gets(str1);
+    char* token=strtok(str1, " ");
+    while(token!=NULL)
+    {
+        int i, j, k=0, flag=0;
+        char toki[50];
+        for(i=0; i<strlen(token); i++)
+        {
+            if(token[i]=='!')
+            {
+                flag=1;
+                for(j=i+1; j<strlen(token); j++)
+                {
+                    toki[k]=token[j];
+                    k++;
+                }
+                break;
+            }
+        }
+        toki[k]='!';
+        for(i=0; i<strlen(token); i++)
+        {
+            if(token[i]=='!') break;
+
+            k++;
+            toki[k]=token[i];
+
+        }
+        toki[k+1]='\0';
+
+        if(flag)
+        {
+            if(ft)
+            {
+                strcpy(str2, toki);
+                strcat(str2, " ");
+                ft=0;
+            }
+            else
+            {
+                strcat(str2, toki);
+                strcat(str2, " ");
+            }
+        }
+        token=strtok(NULL, " ");
+
+    }
+    str2[strlen(str2)-1]='\0';
+    puts(str2);
+    return 0;
+}
