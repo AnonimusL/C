@@ -1,0 +1,47 @@
+/**
+n=6;
+	6+√1/(5+√2/(4+√1/(3+√2/(2+√1/1))))=6.187624
+*/
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+
+
+double rek(int n, int i, int p)
+{
+    if(n!=1)
+    {
+        if(p%2==0) return n+sqrt(i)/rek(n-1, i+1, p+1);
+        else return n+sqrt(i)/rek(n-1, i-1, p+1);
+    }
+    else return n;
+}
+
+double ite(int n)
+{
+    int i, j=2;
+    double zbir;
+    if(n%2==0)i=1;
+    else i=2;
+    zbir=1;
+    for(j=2; j<=n; j++)
+    {   if(n%2==0){
+        if(j%2==0) {zbir=j+sqrt(i)/zbir; i++;}
+        else {zbir=j+sqrt(i)/zbir; i--;}}
+        else
+        {
+        if(j%2==0) {zbir=j+sqrt(i)/zbir; i--;}
+        else {zbir=j+sqrt(i)/zbir; i++;}
+        }
+    }
+    return zbir;
+}
+
+int main()
+{
+    int n, i=1;
+    scanf("%d", &n);
+    printf("Rezultat rekurzivno: %lf;\n", rek(n, i, 0));
+    printf("Rezultat iterativno: %lf.\n", ite(n));
+    return 0;
+}
