@@ -1,0 +1,80 @@
+/**
+Napisati funkciju koja za uneti broj n pravi matricu kao u datim primerima. Cifre broja n
+se postavljaju na sporednu dijagonalu, a zatim se vrste popunjavaju redom dupliranim brojevima,
+kada se dođe do 9, slededi broj je 0. Cifra na sporednoj dijagonali se uvek duplira sa desne strane.
+n=45901         n=999      n=90
+2 2 3 3 4       8 8 9      8 9
+3 4 4 5 5       8 9 9      0 0
+8 8 9 9 0       9 9 0
+9 0 0 1 1
+1 1 2 2 3
+*/
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <limits.h>
+#include <math.h>
+
+void mat(int matrix[][100], int niz[100], int num)
+{
+    int i, j, k=0, p=0, l=1, brojac=0, n, m, brojac2=1;
+    for(i=0; i<num; i++)
+    {
+        for(j=0; j<num; j++)
+        {
+            if(j+i==num-1)
+            {
+            matrix[i][j]=niz[k];
+            k++;
+            for(m=j-1; m>=0; m--)
+            {
+            if(matrix[i][j]==0) matrix[i][m]=10-l;
+            else matrix[i][m]=matrix[i][j]-l;
+            brojac++;
+            if(brojac==2) {brojac=0; l++;}
+            }
+            for(n=j+1; n<num; n++)
+            {
+                if(matrix[i][j]==9) {matrix[i][n]=9+p; if(matrix[i][n]>9) matrix[i][n]=matrix[i][n]-9-1;}
+                else matrix[i][n]=matrix[i][j]+p;
+                brojac2++;
+                if(brojac2==2) {brojac2=0; p++;}
+
+            }
+            }
+        }
+        brojac=0;
+        brojac2=1;
+        p=0;
+        l=1;
+    }
+}
+int main()
+{
+    int n;
+    scanf("%d", &n);
+    int k=0, num, n2=n;
+    while(n2!=0)
+    {
+        n2=n2/10;
+        k++;
+    }
+    num=k;
+    int niz[100];
+    for(k=num-1; k>=0; k--)
+    {
+        niz[k]=n%10;
+        n=n/10;
+    }
+    int matrix[100][100];
+    mat(matrix, niz, num);
+    for(int i=0; i<num; i++)
+    {
+        for(int j=0; j<num; j++)
+        {
+            printf("%d ", matrix[i][j]);
+        }
+        printf("\n");
+    }
+
+}
