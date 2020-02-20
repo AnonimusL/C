@@ -1,0 +1,77 @@
+/**
+Napisati program koji učitava string koji sadrži nizove u uglastim zagradama u kom su
+elementi razdvojeni zarezom, a nizovi su razdvojeni spejsom. Program treba da u unetom stringu
+pronađe i ispiše nizove koji imaju sve različite elemente.
+
+Primer:
+Unos: [a,b,c] [34,up,uup,34] [1,2] [1,2,1,4]
+Ispis: [a,b,c]
+       [1,2]
+*/
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+int main()
+{
+    char str[100];
+    gets(str);
+    char* token = strtok(str, " ");
+    while(token != NULL)
+    {
+        char pomocni[10];
+        int pom = 0, flag = 0;
+        for(int i=1; i<strlen(token); i++)
+        {
+            ///Oformimo rec malu
+            if(token[i] == ',' || token[i] == ']')
+            {
+                ///******************
+                pomocni[pom] = '\0';
+                pom = 0;
+                ///Povecavamo i da ono ne bi bilo ',' jer je tehnicki sada ili ',' ili ']'
+                i++;
+                ///******************
+
+                ///Uporedjivanje, uporedjujemo svaki karakter od i nadalje
+                for(int k=i; k<strlen(token); k++)
+                {
+                   if(token[k] == pomocni[0])
+                    {
+                        for(int j=0; j<strlen(pomocni); j++)
+                        {
+                            if(token[k+j] == pomocni[j])
+                            {
+                                ///Ako se sve poklapaju flag = 1
+                                flag = 1;
+                            }else
+                            {
+                                ///Ako se ne poklapaju izlazimo iz te reci koje gledamo i break
+                                flag = 0;
+                                break;
+                            }
+                        }
+                        ///U slucaju da se bilo koja rec poklopila to je znak da prekidamo sve, necemo print tu rec
+                        if(flag == 1)
+                            break;
+                    }
+                }
+                ///Smanjujemo i jer smo ga povecali dole, povecace ga for loop ne moramo mi
+                i--;
+            }
+            else///Ovde svaki put kada i != ',' ili ']' popunjavamo pomocni string
+            {
+                pomocni[pom] = token[i];
+                pom++;
+            }
+        }
+        ///Kada je flag 0 printamo token
+        if(flag == 0)
+            puts(token);
+
+        token = strtok(NULL, " ");
+    }
+
+
+    return 0;
+}
