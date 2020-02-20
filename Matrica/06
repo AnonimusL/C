@@ -1,0 +1,85 @@
+/**
+Napisati funkciju koja za uneti broj n pravi kvadratnu matricu kao u datim primerima,
+cifre broja se postavljaju na središnju kolonu, ili na dve središnje kolone ako je parna dimenzija
+matrice, a zatim se kolone popunjavaju redom dupliranim brojevima, kada se dođe do 9, slededi broj
+je 0. U slučaju neparne dimenzije cifra sa središnje kolone se uvek duplira u koloni ispod.
+
+n=45901        n=9622       n=90
+5 6 0 1 2      0 7 3 3      9 0
+5 6 0 1 2      9 6 2 2      9 0
+4 5 9 0 1      9 6 2 2
+4 5 9 0 1      8 5 1 1
+3 4 8 9 0
+*/
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <limits.h>
+#include <math.h>
+
+void mat(int matrix[][100], int niz[100], int num)
+{
+    int i, j;
+    for(i=0; i<num; i++)
+    {
+        for(j=0; j<num; j++)
+        {
+            if(i==num/2){
+              if(num%2==0)
+               {
+                matrix[i][j]=niz[j];
+                for(int p=i+1; p<num; p++)
+                {
+                    if(matrix[i][j]==0) matrix[p][j]=9;
+                    else  matrix[p][j]=matrix[i][j]-1;
+                }
+                matrix[i-1][j]=niz[j];
+                for(int q=i-2; q>=0; q--)
+                {
+                    if(matrix[i][j]==9) matrix[q][j]=0;
+                    else  matrix[q][j]=matrix[i][j]+1;
+                }
+               } else
+                {matrix[i][j]=niz[j];
+                for(int p=i-1; p>=0; p--)
+                { if(matrix[i][j]==9) matrix[p][j]=0;
+                    else  matrix[p][j]=matrix[i][j]+1;
+                }
+                 matrix[i+1][j]=niz[j];
+                 for(int q=i+2; q<num; q++)
+                { if(matrix[i][j]==0) matrix[q][j]=9;
+                    else  matrix[q][j]=matrix[i][j]-1;
+                }
+                }
+            }
+        }
+    }
+}
+int main()
+{
+    int n;
+    scanf("%d", &n);
+    int niz[100];
+    int num, k=0, n2=n;
+    while(n2!=0)
+    {
+        n2=n2/10;
+        k++;
+    }
+    num=k;
+    for(int i=num-1; i>=0; i--)
+    {
+        niz[i]=n%10;
+        n=n/10;
+    }
+    int matrix[100][100];
+    mat(matrix, niz, num);
+    for(int i=0; i<num; i++)
+    {
+        for(int j=0; j<num; j++)
+        {
+            printf("%d ", matrix[i][j]);
+        }
+        printf("\n");
+    }
+}
