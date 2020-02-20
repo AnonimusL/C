@@ -1,0 +1,154 @@
+/**   temp.txt
+Belgija Brisel 20
+Francuska Pariz 25
+Srbija Beograd 16
+Engleska London 23
+Grka Atina 27
+Srbija Vranje 19
+Grcka Solun 28
+Spanija Madrid 30
+Srbija Valjevo 17
+Francuska Nica 32
+Nemacka Berlin 17
+Austrija Bec 14
+Nemacka Minhen 20
+Francuska Lion 23
+*/
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+typedef struct Lista{
+        char line[255];
+        char drzava[50];
+        char grad[50];
+        int temp;
+        struct Lista* sledeci;
+
+}Lista;
+
+Lista* napravielement(char text[])
+{
+    Lista* novi=(Lista*)malloc(sizeof(Lista));
+    strcpy(novi->line, text);
+    ///Unosimo elemente
+    strcpy(novi->drzava, strtok(novi->line, " "));
+    strcpy(novi->grad, strtok(NULL, " "));
+    novi->temp=atoi(strtok(NULL, " "));
+    novi->sledeci=NULL;
+    return novi;
+}
+
+Lista* dodajsortirano(Lista* glava, Lista* novi)
+{
+    if(glava==NULL)
+        return novi;
+    if(strcmp(glava->drzava, novi->drzava)>=1 || (strcmp(glava->drzava, novi->drzava)==0 && strcmp(glava->grad, novi->grad)>=1))
+       {
+           novi->sledeci=glava;
+            return novi;
+       }
+       Lista* tmp=glava;
+       while(tmp->sledeci!=NULL)
+       {
+           if(strcmp(tmp->sledeci->drzava, novi->drzava)>=1 || (strcmp(tmp->sledeci->drzava, novi->drzava)==0 && strcmp(tmp->sledeci->grad, novi->grad)>=1))
+       {
+           Lista* helper=tmp->sledeci;
+           tmp->sledeci=novi;
+           novi->sledeci=helper;
+           return glava;
+       }
+       tmp=tmp->sledeci;
+       }
+       tmp->sledeci=novi;
+       novi->sledeci=NULL;
+
+       return glava;
+
+}
+
+void ispisi(Lista* glava)
+{
+    Lista* tmp=glava;
+    while(tmp!=NULL)
+    {
+        printf("Drzava: %s, grad: %s, temperatura: %d\n", tmp->drzava, tmp->grad, tmp->temp);
+        tmp=tmp->sledeci;
+    }
+}
+
+Lista* najhladnijigrad(Lista* glava)
+{
+    int min=100;
+    char pamtim[50];
+    Lista* tmp=glava;
+    while(tmp!=NULL)
+    {
+        if(tmp->temp<min)
+           {
+            min=tmp->temp;
+            strcpy(pamtim, tmp->grad);
+            strcat(pamtim, " ");
+            strcat(pamtim, tmp->drzava);
+           }
+           tmp=tmp->sledeci;
+    }
+    printf("Temperatura %d, %s\n", min, pamtim);
+}
+Lista* prosektemp(Lista* glava, char zemlja[])
+{
+    int zbir=0, brojac=0;
+    Lista* tmp=glava;
+    while(tmp!=NULL)
+    {
+        if(strcmp(tmp->drzava, zemlja)==0)
+        {
+            zbir=zbir+tmp->temp;
+            brojac++;
+        }
+        tmp=tmp->sledeci;
+    }
+    printf("Prosecna temperatura odabrane drzave: %d\n", zbir/brojac);
+}
+int main()
+{
+    FILE* fp;
+    Lista* glava=NULL;
+    char imefajla[50];
+    char str[255];
+    while(1)
+    {
+        int izbor;
+        char zemlja[50];
+        printf("---------------------------\n");
+        printf("Izaberite zeljenu opciju:\n1. Ucitavanje podataka;\n2. Ispis elemenata;\n3. Najhladniji grad\n4. Prosecna temperatura drzave.\n");
+        printf("---------------------------\n");
+        scanf("%d", &izbor);
+        switch(izbor)
+        {
+        case 1:
+            printf("Uneti naziv fajla\n");
+            scanf("%s", imefajla);
+            fp=fopen(strcat(imefajla, ".txt"), "r+");
+            while(fgets(str, 255, fp)!=NULL)
+            {
+                str[strlen(str)-1]='\0';
+                glava=dodajsortirano(glava, napravielement(str));
+            }
+            break;
+        case 2:
+            ispisi(glava);
+            break;
+        case 3:
+            najhladnijigrad(glava);
+            break;
+        case 4:
+            printf("Unesite naziv drzave\n");
+            scanf("%s", zemlja);
+            prosektemp(glava, zemlja);
+        }
+
+    }
+    return 0;
+}
