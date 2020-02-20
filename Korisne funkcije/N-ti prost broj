@@ -1,0 +1,26 @@
+// Funkcija za pronalazenje n-tog prostog broja
+
+int prostBroj(int n)
+{
+    int i, flag, prostbr;
+    int counter = 1;
+
+     if (n == 1)
+        prostbr = 2;
+    else {
+        prostbr = 1;
+        do{
+            prostbr += 2;
+            flag = 1;
+            for (i = 3; i < prostbr; i+=2){
+                if (prostbr % i == 0) {
+                    flag = 0;
+                    break;
+                }
+            }
+            if(flag == 1)
+                counter++;
+        } while (counter != n);
+    }
+    return prostbr;
+}
