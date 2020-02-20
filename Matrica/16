@@ -1,0 +1,145 @@
+/**
+Napisati program koji učitava dve kvadratne matrice celih brojeva od kojih je dimenzija prve
+matrice stepen nekog prirodnog broja (4,9,16,..), a dimenzija druge jednaka korenu dimenzije prve
+matrice i proverava da li u prvoj matrici postoji vrsta i/ili kolona koja sadrži iste elemente kao druga
+matrica (zanemariti broj pojavljivanja elemenata). Ispisati redne brojeve vrsta i kolona prve matrice
+za koje ovo važi.
+Primer:
+1. matrica        2. matrica
+1 1 9 7              1 9
+1 5 9 1              7 9
+1 9 7 9
+1 15 6 9
+Ispis:
+vrsta 0
+vrsta 2
+kolona 3
+*/
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <limits.h>
+#include <math.h>
+
+int n1;
+void sort(int niz1[], int n)
+{
+    int i,j, a;
+    for (i = 0; i < n; ++i)
+        {
+
+            for (j = i + 1; j < n; ++j)
+            {
+
+                if (niz1[i] > niz1[j])
+                {
+
+                    a =  niz1[i];
+                    niz1[i] = niz1[j];
+                    niz1[j] = a;
+
+                }
+            }
+        }
+
+}
+
+void nodup(int niz1[], int n)
+{
+    int i,j,k;
+    for(i = 0; i < n; i++)
+    {
+        for(j = i+1; j < n; )
+        {
+            if(niz1[j] == niz1[i])
+            {
+                for(k = j; k < n; k++)
+                {
+                    niz1[k] = niz1[k+1];
+                }
+                n--;
+            }
+            else
+            {
+                j++;
+            }
+        }
+    }
+    n1=n;
+
+}
+int main()
+{   int n, nn, narr, narr2;
+    scanf("%d", &n);
+    nn=pow(n,2);
+    int bigger[nn][nn], small[n][n], arr[nn], arr2[nn];
+    for(int i=0; i<nn;  i++)
+    {
+        for(int j=0; j<nn; j++)
+        {
+            scanf("%d", &bigger[i][j]);
+        }
+    }
+    for(int i=0; i<n; i++)
+    {
+        for(int j=0; j<n; j++)
+        {
+            scanf("%d", &small[i][j]);
+        }
+    }
+    int k=0;
+    for(int i=0; i<n; i++)
+    {
+        for(int j=0; j<n; j++)
+        {
+            arr[k]=small[i][j];
+            k++;
+        }
+    }
+    sort(arr, nn);
+    nodup(arr, nn);
+    narr=n1;
+    k=0;
+    int counter=0;
+    for(int i=0; i<nn; i++)
+    {
+        for(int j=0; j<nn; j++)
+        {
+            arr2[j]=bigger[i][j];
+             }
+             sort(arr2, nn);
+             nodup(arr2, nn);
+             narr2=n1;
+             if(narr==narr2)
+                {
+                for(k=0; k<narr; k++)
+                {
+                    if(arr[k]==arr2[k]){counter++;}
+                }
+                if(counter==narr) printf("Vrsta %d\n", i);
+                }
+             counter=0;
+    }
+    for(int i=0; i<nn; i++)
+    {
+        for(int j=0; j<nn; j++)
+        {
+            arr2[j]=bigger[j][i];
+
+             }
+             sort(arr2, nn);
+             nodup(arr2, nn);
+             narr2=n1;
+             if(narr==narr2)
+                {
+                for(k=0; k<narr; k++)
+                {
+                    if(arr[k]==arr2[k]){counter++;}
+                }
+                if(counter==narr) printf("Kolona %d\n", i);
+                }
+             counter=0;
+    }
+    
+    return 0;
+}
