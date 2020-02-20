@@ -1,0 +1,74 @@
+/**
+Napisati program koji učitava kvadratnu matricu sastavljenu od nula i jedinica.
+Program treba da u unetoj matrici pronađe najveću kvadratnu podmatricu koji se sastoji
+samo od nula ili samo od jedinica. Ispisati dimenziju podmatrice i indekse vrste i kolone
+gornjeg levog ugla (ako ima više rešenja dovoljno je ispisati samo jedno).
+
+Primer:
+1 1 1 0 1 0             ispis: dimenzija:3X3, gornji levi ugao: 2,1
+1 0 0 0 1 1
+1 .1 1 1 0 1
+0  1 1 1 0 1
+1  1 1 1. 0 1
+1 1 1 0 0 1
+**/
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int main()
+{
+    int matrix[100][100];
+    int n, i, j, k, brojac=0, p, q, i1, j1, flag=0, max=0;
+    scanf("%d", &n);
+    for(i=0; i<n; i++)
+    {
+        for(j=0; j<n; j++)
+        {
+            scanf("%d", &matrix[i][j]);
+        }
+    }
+
+    for(i=0; i<n; i++)
+    {
+        for(j=0; j<n; j++)
+        {
+            if(matrix[i][j]==matrix[i][j+1])
+            {
+                for(k=j; k<n; k++)
+                {
+                    if(matrix[i][j]==matrix[i][k])
+                        brojac++;
+                    else break;
+                }
+            }
+            if(brojac!=0)
+            {
+                for(p=i+1; p<i+brojac; p++)
+                {
+                    for(q=j; q<j+brojac; q++)
+                    {
+                        if(matrix[i][j]==matrix[p][q])
+                            flag=1;
+                        else {flag=0; break;}
+                    }
+                    if(flag==0) break;
+                }
+            }
+            if(flag)
+            {
+                if(brojac>max)
+                {
+                    max=brojac;
+                    i1=i;
+                    j1=j;
+                }
+            }
+            flag=0;
+            brojac=0;
+        }
+    }
+
+    printf("Dimenzije %dx%d, i=%d, j=%d\n", max, max, i1, j1);
+    return 0;
+}
