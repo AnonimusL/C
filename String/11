@@ -1,0 +1,66 @@
+/**
+Napisati program koji učitava string koji se sastoji od reči razdvojenih
+spejsom, reči mogu da sadrže slova engleske abecede i maksimalno dva znaka
+uzvika, mogu i jedan ili ni jedan. Program treba da promeni uneti string (ili
+napravi novi na osnovu unetog) tako što izbaciti reči koje nemaju uzvičnik, a u
+rečima koje imaju dva uzvičnika izbaci deo reči između uzvičnika i same
+uzvičnike. Reči koje imaju jedan uzvičnik se ne menaju i ne izbacuju.
+
+Primer:
+prvi string: obla!ci mesec su!nc!e polj!e!
+Ispis: obla!ci sue polj
+*/
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int main()
+{
+    char string[100];
+    char novi[100];
+    int flag=1;
+    gets(string);
+    char* token=strtok(string, " ");
+    while(token!=NULL)
+    {
+        char novit[20];
+        int i, j, k=0, tmp=strlen(token), brojac=0, brojac2=0;
+       for(j=0; j<tmp; j++)
+       {
+           if(token[j]=='!') brojac2++;
+
+       }
+
+       if(brojac2>1){
+        for(i=0; i<tmp; i++)
+        {
+            if(token[i]!='!' && brojac!=1)
+            {
+                novit[k]=token[i];
+                k++;
+            }
+            if(token[i]=='!') brojac++;
+        }
+        novit[k]='\0';
+        if(flag)
+        {
+            strcpy(novi, novit);
+            flag=0;
+            strcat(novi, " ");
+        } else {strcat(novi, novit); strcat(novi, " ");}
+       }
+       if(brojac2==1)
+       {
+          if(flag){
+          strcpy(novi, token);
+            flag=0;
+            strcat(novi, " ");
+        } else {strcat(novi, token); strcat(novi, " ");}
+       }
+       token=strtok(NULL, " ");
+    }
+    strcat(novi, "\0");
+    puts(novi);
+    return 0;
+}
