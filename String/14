@@ -1,0 +1,71 @@
+/**
+Korisnik unosi string koji sadrži cifre razdvojene crticom. Ispisati koji zbir cifara između crtica se
+najčešde pojavljuje u unetom stringu, ispisati zbir, i sve podstringove cifara koje imaju taj zbir. Ukoliko
+postoji više zbirova koji se najčešde pojavljuju ispisati bilo koji od njih.
+
+PRIMER:
+234-567-908-171-456-432
+Izlaz: Zbir 9, 234 171 432
+*/
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int main()
+{
+    char str[200];
+    int matrix[2][100], val, val1, zbir=0;
+    int   i=0, j=0, i1=1, j1=0, counter=0, counter1=0, pamtimo=0, br=0;
+    gets(str);
+    char* token=strtok(str, "-");
+    while(token!=NULL)
+    {
+        val=atoi(token);
+        val1=val;
+        while(val)
+        {
+            br=val%10;
+            zbir=zbir+br;
+            val=val/10;
+        }
+
+            matrix[i][j]=val1;
+            matrix[i1][j]=zbir;
+            zbir=0;
+
+        token=strtok(NULL, "-");
+        j++;
+
+    }
+
+        for(int j1=0; j1<(j-1); j1++)
+        {
+            for(int k=0; k<(j-1); k++)
+            {
+                if(matrix[i1][j1]==matrix[i1][k])
+                {
+                    counter++;
+                }
+            }
+            if(counter>counter1)
+            {
+                counter1=counter;
+                pamtimo=matrix[i1][j1];
+                counter=0;
+            }
+            counter=0;
+        }
+
+        printf("Zbir je %d\n", pamtimo);
+        printf("Trazeni brojevi su ");
+        for(int k=0; k<j; k++)
+        {
+            if(matrix[i1][k]==pamtimo)
+            {
+                printf("%d ", matrix[i][k]);
+            }
+        }
+
+    return 0;
+}
