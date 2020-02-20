@@ -1,0 +1,46 @@
+/**
+Napisati program koji učitava string koji sadrži reči razdvojene spejsom i od njega pravi
+novi string koji sadrži sve različite reči iz unetog stringa (izbačena su sva naredna pojavljivanja iste
+reči).
+
+Primer: prvi drugi prvi treci drugi
+Rezultat: prvi drugi treci
+*/
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+int main()
+{
+    char string[100];
+    char string2[100];
+    char novi[100];
+    int ft=1;
+    gets(string);
+    strcpy(string2, string);
+    char* token=strtok(string, " ");
+    while(token!=NULL)
+    {   int postoji=0, i, j;
+        if(ft) {strcpy(novi, token); strcat(novi, " "); ft=0;}
+        for(i=0; i<strlen(string2); i++)
+        {
+            if(token[0]==novi[i])
+            {
+                for(j=0; j<strlen(token); j++)
+                {
+                    if(token[j]==novi[j+i]) postoji=1;
+                    else {postoji=0; break;}
+                }
+               if(postoji) break;
+            }
+        }
+        if(postoji==0)
+        {
+            strcat(novi, token);
+            strcat(novi, " ");
+        }
+        token=strtok(NULL, " ");
+    }
+    strcat(novi, "\0");
+    puts(novi);
+}
