@@ -1,0 +1,52 @@
+/**
+Napisati program koji učitava string koji sadrži mala slova i crtice i od unetog stringa
+pravi novi string u kom su u podstringu između crtica izbačena sva ponovna pojavljivanja istog slova
+(rezultujudi podstring sadrži jedno pojavljivanje svakog slova iz podstringa u unetom stringu).
+
+Primer: abba-affg-ccc-fgh
+Rezultat: ab-afg-c-fgh
+*/
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int main()
+{
+    char string[100];
+    char novi[100];
+    int flag=1;
+    gets(string);
+    char* token=strtok(string, "-");
+    while(token!=NULL)
+    {
+        char toki[20];
+        int postoji=0, ft=1, i, k=0, j;
+        for(i=0; i<strlen(token); i++)
+        {
+            if(ft) {toki[k]=token[i]; k++; ft=0;toki[k]='\0';}
+            else
+                { for(j=0; j<strlen(toki); j++)
+                     {
+                        if(toki[j]==token[i]) {postoji=1; break;}
+                        else {postoji=0;}
+                     }
+                     if(postoji==0)
+                     {
+                         toki[k]=token[i];
+                         k++;
+                         toki[k]='\0';
+                     }
+                }
+        }
+        toki[k]='\0';
+        if(flag)
+        {strcpy(novi, toki); strcat(novi, "-"); flag=0;}
+        else {strcat(novi, toki); strcat(novi, "-");}
+
+        token=strtok(NULL, "-");
+    }
+    strcat(novi, "\0");
+    novi[strlen(novi)-1]='\0';
+    puts(novi);
+}
