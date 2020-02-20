@@ -1,0 +1,79 @@
+/**
+Napisati program koji učitava ceo broj n i matricu koja sadrži cifre od 0
+do 9. Program treba da proveri i ispiše koliko puta se cifre broja n pojavljuju
+redom u kolonama matrice čitajući od dole na gore i uzimajući u obzir i prelazak
+u sledeću kolonu (na primer prve dve cifre broja mogu biti u jednoj koloni a
+ostatak u sledećoj). Pojavljivanja cifara ne moraju biti odvojena, na primer može
+prva cifra jednog pojavljivanja da bude poslednja cifra prethodnog, kao u
+primeru.
+Primer:
+4 5 9 1 n = 3453
+3 4 5 4
+2 3 3 5
+7 5 3 7
+Ispis:
+2
+*/
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <limits.h>
+#include <math.h>
+
+int main()
+{
+    int n, m;
+    scanf("%d", &n);
+    int n1=n, k=0, num;
+    while(n1!=0)
+    {
+        n1=n1/10;
+        k++;
+    }
+    num=k;
+    int niz[100];
+    while(n!=0)
+    {
+        niz[k-1]=n%10;
+        k--;
+        n=n/10;
+    }
+    k=0;
+    scanf("%d", &m);
+    int matrix[100][100];
+    int i, j, brojac=0;
+    for(i=0; i<m; i++)
+    {
+        for(j=0; j<m; j++)
+        {
+            scanf("%d", &matrix[i][j]);
+        }
+    }
+    /// uporedjivanje elemenata
+    for(i=0; i<m; i++)
+    {
+        for(j=0; j<m; j++)
+        {
+            if(matrix[i][j]==niz[k])
+            {
+                for(int p=i; p>=0; p--)
+                {
+                    if(matrix[p][j]==niz[k])
+                        k++;
+                }
+                if(k==num) {brojac++; k=0;}
+                else
+                    {
+                        for(int q=m-1; q>=0; q--)
+                        {
+                            if(k==num) {brojac++; k=0; break;}
+                            if(matrix[q][j]==niz[k])
+                                    k++;
+                        }
+                    }
+            }
+        }
+    }
+    printf("%d\n", brojac);
+    return 0;
+}
