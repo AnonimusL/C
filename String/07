@@ -1,0 +1,60 @@
+/**
+U stringu koji unosi korisnik nadi najkradi i najduži podstring koji počinje i završava se
+samoglasnikom (a,e, i, o,u i velika slova).
+
+Primer: abcdEra
+Ispis: najkradi: Era
+najduži: abcdEra
+*/
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int main()
+{
+    char string[100];
+    char duzi[100];
+    char kraci[50];
+    gets(string);
+    int tmp=0, i, ft=0, kraj=0, p=0;
+    for(i=0; i<strlen(string); i++)
+    {
+        if(string[i]=='a' || string[i]=='e' || string[i]=='i' || string[i]=='o' || string[i]=='u' ||
+           string[i]=='A' || string[i]=='E' || string[i]=='I' || string[i]=='O' || string[i]=='U')
+        {
+            if(ft){ tmp=i; ft=0;}
+            else kraj=i;
+        }
+    }
+    for(i=tmp; i<=kraj; i++)
+    {
+        duzi[p]=string[i];
+        p++;
+    }
+    duzi[p]='\0';
+    printf("Najduzi: ");
+    puts(duzi);
+    ft=1;
+    int b, b1, b2, razlika1=999, razlika2=999, pamtim1, pamtim2;
+    for(i=0; i<strlen(string); i++)
+    {
+        if(string[i]=='a' || string[i]=='e' || string[i]=='i' || string[i]=='o' || string[i]=='u' ||
+           string[i]=='A' || string[i]=='E' || string[i]=='I' || string[i]=='O' || string[i]=='U')
+        {if(ft){ b=i; ft=0;}
+         else
+            {b1=b; b2=i;
+             razlika2=b2-b1;
+             if(razlika2<razlika1) {pamtim1=b1; pamtim2=b2; razlika1=razlika2; b=b2;}
+            }
+        }
+    }
+    p=0;
+    for(i=pamtim1; i<=pamtim2; i++)
+    {
+        kraci[p]=string[i];
+        p++;
+    }
+    kraci[p]='\0';
+    printf("Najkraci: ");
+    puts(kraci);
