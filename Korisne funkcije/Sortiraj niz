@@ -1,0 +1,24 @@
+ // funkcija za sortiranje niza
+ 
+ void sortiraj(int niz[], int n)
+ {  
+      int i, j, a;
+ for (i = 0; i < n; ++i) 
+        {
+ 
+            for (j = i + 1; j < n; ++j)
+            {
+ 
+                if (niz[i] > niz[j]) 
+                {
+ 
+                    a =  niz[i];
+                    niz[i] = niz[j];
+                    niz[j] = a;
+ 
+                }
+ 
+            }
+ 
+        }
+}
