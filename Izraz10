@@ -1,0 +1,49 @@
+/**
+n=6;
+6+65/(7+54/(9+43/(12+32/(16+21/21))))=11.670048
+
+n=7;
+7+76/(8+65/(10+54/(13+43/(17+32/(22+21/28)))))=12.934115
+*/
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+
+double rek(int i, int n, int n2, int gore)
+{
+    if(n2!=1)
+    {
+        return n+(float) gore/rek(i+1, n+i, n2-1, gore-11);
+    }
+    else return n;
+}
+
+double ite(int n)
+{
+    int i=0, j;
+    double zbir=n, levo, gore=21;
+    for(j=0; j<n; j++)
+    {
+        zbir=zbir+j;
+    }
+    j=j-1;
+    levo=zbir-j;
+    for(i=1; i<n; i++)
+    {
+        zbir=levo+gore/zbir;
+        j--;
+        levo=levo-j;
+        gore=gore+11;
+    }
+    return zbir;
+}
+int main()
+{
+    int n, i=1;
+    scanf("%d", &n);
+    printf("%lf\n", rek(i, n, n, n*10+(n-1)));
+    printf("%lf\n", ite(n));
+    return 0;
+}
+
