@@ -1,0 +1,76 @@
+/**
+n=8;
+d+1/(c-1/(b+2/(a-3/(d+5/(c-8/(b+13/a))))))=100.010101
+
+n=7;
+c-1/(b+1/(a-2/(d+3/(c-5/(b+8/a)))))=98.989799
+*/
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+
+
+int fib(int n)
+{
+    if(n==1 || n==2)
+    {
+        return 1;
+    }else return fib(n-1)+fib(n-2);
+}
+
+double rek(int n, int x, int j)
+{   if(x==96) x='d';
+    if(n!=1)
+    {
+        if(n%2==0)
+        {
+            return  (float)x+(fib(j)/rek(n-1, x-1, j++));}
+
+        else {
+            return (float) x-(fib(j)/rek(n-1, x-1, j++));}
+    }
+
+
+    return x;
+
+}
+
+double ite(int n)
+{   int uso=1;
+    double zbir=97;
+    double prednji=98;
+    for(int i=n-1; i>0; i--)
+    {   if(prednji==101){prednji=97;}
+        if(uso)
+        {
+            zbir=prednji+fib(i)/zbir;
+            uso=0;
+
+
+        }else{
+            zbir=prednji-fib(i)/zbir;
+            uso=1;
+
+        }
+        prednji++;
+    }
+
+    return zbir;
+}
+int main()
+{
+    int n, j=1;
+    scanf("%d", &n);
+
+    char x='a';
+    for(int i=1; i<n; i++)
+    {   if(x=='e') x='a';
+        x++;
+    }
+
+    printf("Rezultat rekurzivno: %lf;\n", rek(n, x, 1) );
+    printf("Rezultat iterativno: %lf.\n", ite(n));
+
+    return 0;
+}
