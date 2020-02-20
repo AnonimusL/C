@@ -1,0 +1,62 @@
+/**
+Napisati funkciju koja od date matrice pravi novu matricu tako što svaki element
+matrice zamenjuje minimumom iz kolone i vrste u kojoj se nalazi element. Napraviti testni program
+koji učitava matricu od korisnika i ispisuje rezultat. Primer:
+2 3 5 7 5      1 2 2 2 2
+3 5 9 2 8      1 2 2 2 2
+1 8 2 5 6      1 1 1 1 1
+7 3 4 5 4      1 3 2 2 3
+1 3 9 6 5      1 1 1 1 1
+*/
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <limits.h>
+#include <math.h>
+
+void mat(int matrix[][100], int novi[][100], int n)
+{
+    int i, j, min=INT_MAX, i1=0, j1=0, s, p;
+    while(i1!=n){
+     for(j=0; j<n; j++)
+        {
+            if(matrix[i1][j]<min)
+                min=matrix[i1][j];
+        }
+
+      for(i=0; i<n; i++)
+        {
+            if(matrix[i][j1]<min)
+                min=matrix[i][j1];
+        }
+
+        novi[i1][j1]=min;
+        min=INT_MAX;
+        j1++;
+        if(j1==n) {j1=0; i1++;}
+      }
+
+}
+int main()
+{
+    int n, p, q;
+    scanf("%d", &n);
+    int matrix[100][100];
+    for(p=0; p<n; p++)
+    {
+        for(q=0; q<n; q++)
+        {
+            scanf("%d", &matrix[p][q]);
+        }
+    }
+    int novi[100][100];
+    mat(matrix, novi, n);
+    for(int i=0; i<n; i++)
+    {
+        for(int j=0; j<n; j++)
+        {
+            printf("%d ", novi[i][j]);
+        }
+        printf("\n");
+    }
+}
