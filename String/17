@@ -1,0 +1,80 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+/**
+Napisati program koji ucitava string sastavljen od reci koje sadrze mala slova abecede, a neke reci imaju i veliko X, koje ne moze biti
+na kraju reci. Program treba da od unetog stringa napravi novi string u kome ce reci koje sadrze X promeniti tako sto se ukrste strignovi
+pre i posle X. Ukrstanje se radi tako sto se posle svaka dva slova desno od X umetne jedno slovo iz podstringa levo od X, slova se
+umecu redom, kada se potrose sva slova iz levog podstringa krece se od pocetka. Reci koje ne sadrze X ne prenose se u rezultujuci string.
+
+UNOS:
+nmXabcdefg zhj acXbbbbb sXcccccc
+
+ISPIS:
+abncdmefng bbabbcb ccsccscc
+
+*/
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int main()
+{
+    char str[100];
+    char str2[100];
+    int ft=1;
+    gets(str);
+    char* token=strtok(str, " ");
+    while(token!=NULL)
+    {
+        int i=0, tmp=1, k1=0, k2=0, flag=0, brojac=0;
+        char pomoc1[100];
+        char pomoc2[100];
+        char str3[100];
+        for(i=0; i<strlen(token); i++)
+        {
+            if(token[i]=='X') {flag=1; break;}
+            else flag=0;
+        }
+        if(flag)
+        {
+            for(i=0; i<strlen(token); i++)
+            {
+                if(token[i]=='X') { tmp=0; pomoc1[k1]='\0';}
+                if(tmp)
+                {
+                    pomoc1[k1]=token[i];
+                    k1++;
+                }
+                else
+                {
+                    pomoc2[k2]=token[i+1];
+                    k2++;
+                }
+            }
+            pomoc2[k2]='\0';
+            k1=0;
+            k2=0;
+            for(i=0; i<strlen(token); i++)
+            {
+                if(k1==strlen(pomoc1)) k1=0;
+                if(brojac<2)
+                {str3[i]=pomoc2[k2]; k2++;}
+                else {str3[i]=pomoc1[k1]; k1++; brojac=-1;}
+                brojac++;
+            }
+            str3[i]='\0';
+            if(ft)
+            {
+            strcpy(str2, str3);
+            ft=0;
+            } else strcat(str2, str3);
+            strcat(str2, " ");
+        }
+        token=strtok(NULL, " ");
+    }
+    puts(str2);
+    return 0;
+}
